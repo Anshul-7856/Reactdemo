@@ -26,21 +26,13 @@ steps:
     archiveType: 'zip'
     archiveFile: '$(outPutDirectory)/reactapp.zip'
   
-- task: PublishBuildArtifacts@1
-  displayName: Start publish artifacts
+- task: AzureStaticWebApp@0
   inputs:
-      PathtoPublish: '$(outPutDirectory)'
-      ArtifactName: 'drop'
+    app_location: '/'
+    output_location: 'build'
+    skip_app_build: true
+    azure_static_web_apps_api_token: $(a852f1db42444a5cfdfd0dc3287a9b7e2a365a3a1ab974194af49d43bf7ff95007-db55ed3d-a2bf-4093-ad9c-a4e4ea90641c0001511067e17c00)
 
-- task: AzureRmWebAppDeployment@5
-  inputs:
-    ConnectionType: 'AzureRM'
-    azureSubscription: 'Azure subscription 1(3)(c78f5631-a467-42bd-ad63-7d34ce5580a2)'
-    appType: 'webAppLinux'
-    WebAppName: 'MydemoReactApp'
-    packageForLinux: '$(outPutDirectory)/**/*.zip'
-    RuntimeStack: 'NODE|20-lts'
-    DeploymentTypeLinux: 'oneDeploy'
 
 
 
