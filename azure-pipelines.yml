@@ -32,7 +32,6 @@ steps:
       PathtoPublish: '$(outPutDirectory)'
       ArtifactName: 'drop'
 
--
 - task: AzureRmWebAppDeployment@5
   inputs:
     ConnectionType: 'AzureRM'
