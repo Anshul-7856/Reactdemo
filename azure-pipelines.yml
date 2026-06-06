@@ -35,13 +35,12 @@ steps:
 - task: AzureRmWebAppDeployment@5
   inputs:
     ConnectionType: 'AzureRM'
-    azureSubscription: 'Azure subscription 1(1)(c78f5631-a467-42bd-ad63-7d34ce5580a2)'
+    azureSubscription: 'Azure subscription 1(3)(c78f5631-a467-42bd-ad63-7d34ce5580a2)'
     appType: 'webAppLinux'
-    WebAppName: 'MyDemoReactapp'
+    WebAppName: 
     packageForLinux: '$(outPutDirectory)/**/*.zip'
     RuntimeStack: 'NODE|20-lts'
     DeploymentTypeLinux: 'oneDeploy'
-
 
 
 
