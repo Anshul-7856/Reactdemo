@@ -1,0 +1,49 @@
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-latest
+
+variables: 
+ outPutDirectory: $(Build.ArtifactStagingDirectory)
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '20.x'
+  displayName: 'Install Node.js'
+
+- script: |
+    npm install
+    npm run build
+  displayName: 'build react app'
+
+- task: ArchiveFiles@2
+  displayName: 'Create Zip Package'
+  inputs:
+    rootFolderOrFile: 'build'
+    includeRootFolder: false
+    archiveType: 'zip'
+    archiveFile: '$(outPutDirectory)/reactapp.zip'
+  
+- task: PublishBuildArtifacts@1
+  displayName: Start publish artifacts
+  inputs:
+      PathtoPublish: '$(outPutDirectory)'
+      ArtifactName: 'drop'
+
+-
+- task: AzureRmWebAppDeployment@5
+  inputs:
+    ConnectionType: 'AzureRM'
+    azureSubscription: 'Azure subscription 1(1)(c78f5631-a467-42bd-ad63-7d34ce5580a2)'
+    appType: 'webAppLinux'
+    WebAppName: 'MyDemoReactapp'
+    packageForLinux: '$(outPutDirectory)/**/*.zip'
+    RuntimeStack: 'NODE|20-lts'
+    DeploymentTypeLinux: 'oneDeploy'
+
+
+
+
+
