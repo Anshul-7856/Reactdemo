@@ -19,6 +19,10 @@ steps:
     npm run build
   displayName: 'Build React App'
 
+- script: |
+    echo ${#AZURE_STATIC_WEB_APPS_API_TOKEN}
+  displayName: 'Tooken'
+
 - task: Bash@3
   displayName: 'Check Static Web App Token'
   inputs:
@@ -34,4 +38,4 @@ steps:
     app_location: '/'
     output_location: 'build'
     skip_app_build: true
-    azure_static_web_apps_api_token: '$(AZURE_STATIC_WEB_APPS_API_TOKEN)'
+    azure_static_web_apps_api_token: $(AZURE_STATIC_WEB_APPS_API_TOKEN)
