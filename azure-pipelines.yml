@@ -4,36 +4,24 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
-variables: 
- outPutDirectory: $(Build.ArtifactStagingDirectory)
+variables:
+  outPutDirectory: $(Build.ArtifactStagingDirectory)
 
 steps:
-- task: UseNode@1
+
+- task: NodeTool@0
   inputs:
-    version: '20.x'
+    versionSpec: '20.x'
   displayName: 'Install Node.js'
 
 - script: |
     npm install
     npm run build
-  displayName: 'build react app'
+  displayName: 'Build React App'
 
-- task: ArchiveFiles@2
-  displayName: 'Create Zip Package'
-  inputs:
-    rootFolderOrFile: 'build'
-    includeRootFolder: false
-    archiveType: 'zip'
-    archiveFile: '$(outPutDirectory)/reactapp.zip'
-  
 - task: AzureStaticWebApp@0
   inputs:
     app_location: '/'
     output_location: 'build'
     skip_app_build: true
-    azure_static_web_apps_api_token: $(a852f1db42444a5cfdfd0dc3287a9b7e2a365a3a1ab974194af49d43bf7ff95007-db55ed3d-a2bf-4093-ad9c-a4e4ea90641c0001511067e17c00)
-
-
-
-
-
+    azure_static_web_apps_api_token: '$(AZURE_STATIC_WEB_APPS_API_TOKEN)'
