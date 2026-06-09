@@ -9,10 +9,15 @@ variables:
 
 steps:
 
-- script: | 
-   npm install 
-   npm run build 
-  displayName: 'build react app' 
+- task: UseNode@1
+  inputs:
+    version: '20.x'
+  displayName: 'Install Node.js'
+
+- script: |
+    npm install
+    npm run build
+  displayName: 'Build React App'
 
 - task: ArchiveFiles@2
   displayName: 'Create Zip Package'
