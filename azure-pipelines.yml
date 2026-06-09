@@ -9,33 +9,29 @@ variables:
 
 steps:
 
-- task: NodeTool@0
+- script: | 
+   npm install 
+   npm run build 
+  displayName: 'build react app' 
+
+- task: ArchiveFiles@2
+  displayName: 'Create Zip Package'
   inputs:
-    versionSpec: '20.x'
-  displayName: 'Install Node.js'
+    rootFolderOrFile: 'build'
+    includeRootFolder: false
+    archiveType: 'zip'
+    archiveFile: '$(outPutDirectory)/reactapp.zip'
 
-- script: |
-    npm install
-    npm run build
-  displayName: 'Build React App'
-
-- script: |
-    echo ${#AZURE_STATIC_WEB_APPS_API_TOKEN}
-  displayName: 'Tooken'
-
-- task: Bash@3
-  displayName: 'Check Static Web App Token'
+- task: PublishBuildArtifacts@1
+  displayName: Start publish artifacts
   inputs:
-    targetType: 'inline'
-    script: |
-      echo "Token Length:"
-      echo ${#AZURE_STATIC_WEB_APPS_API_TOKEN}
-  env:
-    AZURE_STATIC_WEB_APPS_API_TOKEN: $(AZURE_STATIC_WEB_APPS_API_TOKEN)
-    
+    PathtoPublish: '$(outPutDirectory)'
+    ArtifactName: 'drop'
+
 - task: AzureStaticWebApp@0
   inputs:
-    app_location: '/'
+    app_location: '.'
     output_location: 'build'
     skip_app_build: true
-    azure_static_web_apps_api_token: $(AZURE_STATIC_WEB_APPS_API_TOKEN)
+    azure_static_web_apps_api_token: $(SWA_TOKEN)
+
