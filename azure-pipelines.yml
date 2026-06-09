@@ -27,12 +27,6 @@ steps:
     archiveType: 'zip'
     archiveFile: '$(outPutDirectory)/reactapp.zip'
 
-- task: PublishBuildArtifacts@1
-  displayName: Start publish artifacts
-  inputs:
-    PathtoPublish: '$(outPutDirectory)'
-    ArtifactName: 'drop'
-
 - task: AzureStaticWebApp@0
   inputs:
     app_location: '.'
